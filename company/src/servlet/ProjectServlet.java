@@ -3,6 +3,8 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,24 +26,13 @@ public class ProjectServlet extends HttpServlet {
 			String type = null;
 				request.setCharacterEncoding("UTF-8");
 				type = request.getParameter("type");
-				if (type == null) {
-					show(request, response);
-				} else if ("showAdd".equals(type)) {
-					showAdd(request, response);
-				} else if ("add".equals(type)) {
-					add(request, response);
-				} else if ("showUpdate".equals(type)) {
-					showUpdate(request, response);
-				} else if ("update".equals(type)) {
-					update(request, response);
-				} else if ("update2".equals(type)) {
-					update2(request, response);
-				} else if ("del".equals(type)) {
-					del(request, response);
-				}
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+				Class class1 = this.getClass();
+				Method method = class1.getMethod(type, HttpServletRequest.class, HttpServletResponse.class);
+				method.invoke(this, request, response);
+			} catch (UnsupportedEncodingException | NoSuchMethodException | SecurityException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
 	}
 
 	public void del(HttpServletRequest request, HttpServletResponse response) {
@@ -51,7 +42,7 @@ public class ProjectServlet extends HttpServlet {
 			ProjectDao proDao = new ProjectDao();
 			flag = proDao.del(ids);
 			if (flag) {
-				response.sendRedirect("project");
+				response.sendRedirect("project?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -68,7 +59,7 @@ public class ProjectServlet extends HttpServlet {
 			pro = (List<Project>) jsonArray.toCollection(jsonArray, Project.class);
 			flag = proDao.update(pro);
 			if (flag) {
-				response.sendRedirect("project");
+				response.sendRedirect("project?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -116,7 +107,7 @@ public class ProjectServlet extends HttpServlet {
 			ProjectDao proDao = new ProjectDao();
 			flag = proDao.add(pro);
 			if (flag) {
-				response.sendRedirect("project");
+				response.sendRedirect("project?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -134,7 +125,7 @@ public class ProjectServlet extends HttpServlet {
 
 	}
 
-	public void show(HttpServletRequest request, HttpServletResponse response) {
+	public void search(HttpServletRequest request, HttpServletResponse response) {
 		List<Project> proList = new ArrayList<>();
 		Project pro = new Project();
 		pro.setName(request.getParameter("name"));

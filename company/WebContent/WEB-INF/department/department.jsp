@@ -198,10 +198,6 @@ select {
 					})
 				})
 				var str = JSON.stringify(array);
-				//url传输不能有大括号{} 使用str.replace()转换。
-				//str = str.replace(/{/g,"%7b");
-				//str = str.replace(/}/g,"%7d");
-				//location.href = "department?type=update&deps="+ str;
 				$.ajax({
 					url:"department",
 					type:"post",
@@ -246,7 +242,7 @@ select {
 </div>
 <div id="main">
 	<div id="select">
-			<form action="department" method="post">
+			<form action="department?type=search" method="post">
 				<div class="form-group">
 					<div>
 						<input type="text" class="col-sm-6 form-control" name="name" placeholder="请输入名称" <c:if test="${dep.name!=''}">value="${dep.name}"</c:if>>
@@ -279,7 +275,7 @@ select {
 						<input type="text" value="${deps.name}" name="updateName" style="display: none;"/>
 					</td>
 					<td class="countTd">
-						<p><a class="count" href="employee?dep=${deps.id}">${deps.emp_count}</a></p>
+						<p><a class="count" href="employee?type=search&dep=${deps.id}">${deps.emp_count}</a></p>
 					</td>
 				</tr>
 				</c:forEach>
@@ -288,13 +284,13 @@ select {
 		<div id="page">
 		<div id="pages">
 			<ul class="pagination">
-				<li id="begin"><a href="department?ye=1&name=${dep.name}&count=${dep.emp_count}">首页</a></li>
-				<li id="pre"><a href="department?ye=${p.ye-1}&name=${dep.name}&count=${dep.emp_count}">上一页</a></li>
+				<li id="begin"><a href="department?type=search&ye=1&name=${dep.name}&count=${dep.emp_count}">首页</a></li>
+				<li id="pre"><a href="department?type=search&ye=${p.ye-1}&name=${dep.name}&count=${dep.emp_count}">上一页</a></li>
 			<c:forEach begin="${p.beginYe}" end="${p.endYe}" varStatus="status">
-				<li <c:if test="${p.ye == status.index}">class="active"</c:if>><a href="department?ye=${status.index}&name=${dep.name}&count=${dep.emp_count}">${status.index}</a></li>
+				<li <c:if test="${p.ye == status.index}">class="active"</c:if>><a href="department?type=search&ye=${status.index}&name=${dep.name}&count=${dep.emp_count}">${status.index}</a></li>
 			</c:forEach>
-				<li id="next"><a href="department?ye=${p.ye+1}&name=${dep.name}&count=${dep.emp_count}">下一页</a></li>
-				<li id="end"><a href="department?ye=${p.maxYe}&name=${dep.name}&count=${dep.emp_count}">末页</a></li>
+				<li id="next"><a href="department?type=search&ye=${p.ye+1}&name=${dep.name}&count=${dep.emp_count}">下一页</a></li>
+				<li id="end"><a href="department?type=search&ye=${p.maxYe}&name=${dep.name}&count=${dep.emp_count}">末页</a></li>
 			</ul>
 			</div>
 			<div id="message"><p>共${p.maxYe}页</p></div>

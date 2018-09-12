@@ -27,7 +27,7 @@ $().ready(function () {
 		//url传输不能有大括号{} 使用str.replace()转换。
 		str = str.replace(/{/g,"%7b");
 		str = str.replace(/}/g,"%7d");
-		alert(str);
+		//alert(str);
 		location.href = "project?type=update&pros="+ str;
 	})
 })

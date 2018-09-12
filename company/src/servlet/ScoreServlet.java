@@ -3,6 +3,8 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,16 +35,11 @@ public class ScoreServlet extends HttpServlet {
 			response.setContentType("text/html;charset=utf-8");
 			request.setCharacterEncoding("UTF-8");
 			type = request.getParameter("type");
-			if (type == null) {
-				show(request, response);
-			} else if ("update".equals(type)) {
-				update(request, response);
-			} else if ("show".equals(type)) {
-				scoreShow(request, response);
-			} else if ("findPro".equals(type)) {
-				findPro(request, response);
-			}
-		} catch (UnsupportedEncodingException e) {
+			Class class1 = this.getClass();
+			Method method = class1.getMethod(type, HttpServletRequest.class, HttpServletResponse.class);
+			method.invoke(this, request, response);
+		} catch (UnsupportedEncodingException | NoSuchMethodException | SecurityException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 	}
@@ -99,7 +96,7 @@ public class ScoreServlet extends HttpServlet {
 		}
 	}
 
-	public void show(HttpServletRequest request, HttpServletResponse response) {
+	public void search(HttpServletRequest request, HttpServletResponse response) {
 		List<Score> scList = new ArrayList<>();
 		Score sc = new Score();
 		Employee emp = new Employee();

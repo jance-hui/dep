@@ -82,10 +82,10 @@ public class ProjectDao extends BaseDao{
 			conn = getConnection();
 			stat = conn.createStatement();
 			conn.setAutoCommit(false);
-			int rs = stat.executeUpdate("delete from project where id in( "+ids+")");
-			rs = stat.executeUpdate("delete from r_dep_pro where p_id in( "+ids+")");
+			int rss = stat.executeUpdate("delete from project where id in( "+ids+")");
+			int rs = stat.executeUpdate("delete from r_dep_pro where p_id in( "+ids+")");
 			conn.commit();
-			if(rs >0) {
+			if(rs >0 || rss >0) {
 				flag = true;
 			}
 		} catch (SQLException e) {

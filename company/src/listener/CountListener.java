@@ -39,7 +39,7 @@ public class CountListener implements HttpSessionListener{
 		}
 		num--;
 		String numStr = "num:"+String.valueOf(num);
-		MyWebSocket.sendMessageAll(numStr,"");
 		application.setAttribute("num", num);
+		MyWebSocket.sendMessageAll(numStr,"");
 	}
 }

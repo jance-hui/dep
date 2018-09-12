@@ -65,7 +65,7 @@ $().ready(function() {
 	</div>
 	<div id="main">
 		<form class="form-horizontal" role="form" action="employee" method="post">
-			<input type="hidden" name="type" value="add">
+			<input type="hidden" name="type" value="add2">
 			<div class="form-group">
 				<label for="firstname" class="col-sm-5 control-label">员工姓名：</label>
 				<div class="col-sm-5">
@@ -75,8 +75,8 @@ $().ready(function() {
 			<div class="form-group">
 				<label for="firstname" class="col-sm-5 control-label">员工性别：</label>
 				<div class="col-sm-5">
-					<input type="radio" value="男" name="sex" checked="checked">男</input> 
-					<input type="radio" value="女" name="sex" >女</input>
+					<input type="radio" value="男" name="sex" checked="checked">男
+					<input type="radio" value="女" name="sex" >女
 				</div>
 			</div>
 			<div class="form-group">

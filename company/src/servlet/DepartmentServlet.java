@@ -3,6 +3,8 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,40 +28,16 @@ public class DepartmentServlet extends HttpServlet {
 			String type = null;
 			request.setCharacterEncoding("UTF-8");
 			type = request.getParameter("type");
-			if (type == null) {
-				show(request, response);
-			} else if ("showAdd".equals(type)) {
-				showAdd(request, response);
-			} else if ("add".equals(type)) {
-				add(request, response);
-			} else if ("showUpdate".equals(type)) {
-				showUpdate(request, response);
-			} else if ("update".equals(type)) {
-				update(request, response);
-			} else if ("update2".equals(type)) {
-				update2(request, response);
-			} else if ("del".equals(type)) {
-				del(request, response);
-			} else if ("showPro".equals(type)) {
-				showPro(request, response);
-			} else if ("addPro".equals(type)) {
-				addPro(request, response);
-			} else if ("delPro".equals(type)) {
-				delPro(request, response);
-			} else if ("showPro1".equals(type)) {
-				showPro1(request, response);
-			} else if ("showPro2".equals(type)) {
-				showPro2(request, response);
-			} else if ("showPro3".equals(type)) {
-				showPro3(request, response);
-			}
-		} catch (UnsupportedEncodingException e) {
+			Class class1 = this.getClass();
+			Method method = class1.getMethod(type, HttpServletRequest.class, HttpServletResponse.class);
+			method.invoke(this, request, response);
+		} catch (UnsupportedEncodingException | NoSuchMethodException | SecurityException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public void show(HttpServletRequest request, HttpServletResponse response) {
+	public void search(HttpServletRequest request, HttpServletResponse response) {
 		List<Department> depList = new ArrayList<>();
 		Department dep = new Department();
 		dep.setName(request.getParameter("name"));
@@ -109,7 +87,7 @@ public class DepartmentServlet extends HttpServlet {
 			DepartmentDao depDao = new DepartmentDao();
 			flag = depDao.add(dep);
 			if (flag) {
-				response.sendRedirect("department");
+				response.sendRedirect("department?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -141,7 +119,7 @@ public class DepartmentServlet extends HttpServlet {
 			DepartmentDao depDao = new DepartmentDao();
 			flag = depDao.update(dep);
 			if (flag) {
-				response.sendRedirect("department");
+				response.sendRedirect("department?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -173,7 +151,7 @@ public class DepartmentServlet extends HttpServlet {
 			DepartmentDao depDao = new DepartmentDao();
 			flag = depDao.del(ids);
 			if (flag) {
-				response.sendRedirect("department");
+				response.sendRedirect("department?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

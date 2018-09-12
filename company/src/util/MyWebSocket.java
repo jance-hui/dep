@@ -1,6 +1,8 @@
 package util;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +32,9 @@ public class MyWebSocket {
 	public void onOpen(Session session) {
 		this.session = session;
 		set.add(this); // 加入set中
-		System.out.println("有新连接加入！");
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+		System.out.println(format.format(date)+" 有新连接加入！");
 	}
 
 	/**
@@ -38,8 +42,10 @@ public class MyWebSocket {
 	 */
 	@OnClose
 	public void onClose() {
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 		set.remove(this); // 从set中删除
-		System.out.println("有一连接关闭！");
+		System.out.println(format.format(date)+" 有一连接关闭！");
 	}
 
 	/**

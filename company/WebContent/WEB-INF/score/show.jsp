@@ -59,6 +59,24 @@
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
 	$().ready(function() {
+		if($("#selectDep").val() != ""){
+			var d_id = $("#selectDep").val();
+			$.ajax({
+				url:"score",
+				type:"post",
+				data:{type:"findPro",d_id:d_id},
+				dataType:"json",
+				success: function(data) {
+					var result = data;
+					var pro = "<option value='''>请选择项目</option>";
+					$.each(result,function(index, n){
+						pro+="<option value='"+result[index].id+"'>"+result[index].name+"</option>";
+					});
+					$("#selectPro").empty();
+					$("#selectPro").html(pro); 
+				}
+			})
+		}
 		if(${p.ye}<=1){
 			$("#pre").addClass("disabled");
 			$("#pre").find("a").attr("onclick","return false");
@@ -99,7 +117,7 @@
 	</div>
 	<div id="main">
 		<div id="select">
-			<form action="score" method="post">
+			<form action="score?type=scoreShow" method="post">
 				<div class="form-group">
 					<div>
 						<input type="text" class="col-sm-4 form-control" name="empName" placeholder="请输入姓名" <c:if test="${sc.emp.name!=''}">value="${sc.emp.name}"</c:if>>
@@ -170,14 +188,14 @@
 		<div id="page">
 			<div id="pages">
 				<ul class="pagination">
-					<li id="begin"><a href="score?ye=1&empName=${sc.emp.name}&dep=${sc.emp.dep.id!=-1?sc.emp.dep.id:''}&pro=${sc.pro.id!=-1?sc.pro.id:''}">首页</a></li>
-					<li id="pre"><a href="score?ye=${p.ye-1}&empName=${sc.emp.name}&dep=${sc.emp.dep.id!=-1?sc.emp.dep.id:''}&pro=${sc.pro.id!=-1?sc.pro.id:''}">上一页</a></li>
+					<li id="begin"><a href="score?type=scoreShow&ye=1&empName=${sc.emp.name}&dep=${sc.emp.dep.id!=-1?sc.emp.dep.id:''}&pro=${sc.pro.id!=-1?sc.pro.id:''}&grade=${sc.grade}">首页</a></li>
+					<li id="pre"><a href="score?type=scoreShow&ye=${p.ye-1}&empName=${sc.emp.name}&dep=${sc.emp.dep.id!=-1?sc.emp.dep.id:''}&pro=${sc.pro.id!=-1?sc.pro.id:''}&grade=${sc.grade}">上一页</a></li>
 					<c:forEach begin="${p.beginYe}" end="${p.endYe}" varStatus="status">
 						<li <c:if test="${p.ye == status.index}">class="active"</c:if>><a
-							href="score?ye=${status.index}&empName=${sc.emp.name}&dep=${sc.emp.dep.id!=-1?sc.emp.dep.id:''}&pro=${sc.pro.id!=-1?sc.pro.id:''}">${status.index}</a></li>
+							href="score?type=scoreShow&ye=${status.index}&empName=${sc.emp.name}&dep=${sc.emp.dep.id!=-1?sc.emp.dep.id:''}&pro=${sc.pro.id!=-1?sc.pro.id:''}&grade=${sc.grade}">${status.index}</a></li>
 					</c:forEach>
-					<li id="next"><a href="score?ye=${p.ye+1}&empName=${sc.emp.name}&dep=${sc.emp.dep.id!=-1?sc.emp.dep.id:''}&pro=${sc.pro.id!=-1?sc.pro.id:''}">下一页</a></li>
-					<li id="end"><a href="score?ye=${p.maxYe}&empName=${sc.emp.name}&dep=${sc.emp.dep.id!=-1?sc.emp.dep.id:''}&pro=${sc.pro.id!=-1?sc.pro.id:''}">末页</a></li>
+					<li id="next"><a href="score?type=scoreShow&ye=${p.ye+1}&empName=${sc.emp.name}&dep=${sc.emp.dep.id!=-1?sc.emp.dep.id:''}&pro=${sc.pro.id!=-1?sc.pro.id:''}&grade=${sc.grade}">下一页</a></li>
+					<li id="end"><a href="score?type=scoreShow&ye=${p.maxYe}&empName=${sc.emp.name}&dep=${sc.emp.dep.id!=-1?sc.emp.dep.id:''}&pro=${sc.pro.id!=-1?sc.pro.id:''}&grade=${sc.grade}">末页</a></li>
 				</ul>
 			</div>
 			<div id="message">

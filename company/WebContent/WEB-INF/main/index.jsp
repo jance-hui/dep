@@ -17,17 +17,6 @@
 	padding: 0;
 }
 body {
-	/* 加载背景图 */
-	/* background-image: url(picture/bg1.jpg);
-	/* 背景图垂直、水平均居中 */
-	/* background-position: center center;
-	/* 背景图不平铺 */
-	/* background-repeat: no-repeat;*/
-	/* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 */
-	/* background-attachment: fixed;*/
-	/* 让背景图基于容器大小伸缩 */
-	/* background-size: cover; */
-	/* 设置背景颜色，背景图加载过程中会显示背景色 */
 	background-color: #464646;
 }
 
@@ -136,25 +125,10 @@ a {
 	padding: 0 22px;
 	color: #ccc;
 	font-family:SongTi ;
-	cursor:pointer; 
 }
 </style>
 <script type="text/javascript">
 	$().ready(function() {
-/* 		var time;
-		$(".yi").hover(function() {
-			clearTimeout(time);
-			$(this).next(".er").show(500);
-		}, function() {
-			time = setTimeout(function() {
-				$(this).next(".er").hide(500);
-			}, 500)
-		});
-		$(".er ul").hover(function() {
-			clearTimeout(time);
-		}, function() {
-			$(".er").hide(500)
-		}); */
 		$(".yi").click(function() {
 			$(".er").hide(500);
 			var next = $(this).next();
@@ -189,7 +163,7 @@ a {
 
 	//判断当前浏览器是否支持WebSocket
 	if ('WebSocket' in window) {
-		websocket = new WebSocket("ws://192.168.0.133:8080/dep2/websocket");
+		websocket = new WebSocket("ws://192.168.0.133:8080/company/websocket");
 	} else {
 		alert('没有建立websocket连接')
 	}
@@ -233,7 +207,7 @@ a {
 </head>
 <body>
 	<div id="top">
-		<lable>公司管理系统</lable>	
+		<h2>公司管理系统</h2>	
 		<div id="control">当前管理员:${user.username}</div>
 		<input type="hidden" name="userId" value="${user.id}">
 		<div id="controls">
@@ -251,29 +225,29 @@ a {
 				<div class="yi">员 工 面 板</div>
 				<div class="er">
 					<ul>
-						<li><a target="right" href="employee">员工管理</a></li>
+						<li><a target="right" href="employee?type=search">员工管理</a></li>
 						<li><a target="right" href="employee?type=showAdd">员工添加</a></li>
 					</ul>
 				</div>
 				<div class="yi">部 门 面 板</div>
 				<div class="er">
 					<ul>
-						<li><a target="right" href="department">部门管理</a></li>
+						<li><a target="right" href="department?type=search">部门管理</a></li>
 						<li><a target="right" href="department?type=showAdd">部门添加</a></li>
 					</ul>
 				</div>
 				<div class="yi">项 目 面 板</div>
 				<div class="er">
 					<ul>
-						<li><a target="right" href="project">项目管理</a></li>
+						<li><a target="right" href="project?type=search">项目管理</a></li>
 						<li><a target="right" href="project?type=showAdd">项目添加</a></li>
 					</ul>
 				</div>
 				<div class="yi">绩 效 面 板</div>
 				<div class="er">
 					<ul>
-						<li><a target="right" href="score?type=show">绩效查询</a></li>
-						<li><a target="right" href="score">绩效管理</a></li>
+						<li><a target="right" href="score?type=scoreShow">绩效查询</a></li>
+						<li><a target="right" href="score?type=search">绩效管理</a></li>
 					</ul>
 				</div>
 			</div>

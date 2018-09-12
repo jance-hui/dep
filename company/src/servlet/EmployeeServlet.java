@@ -3,6 +3,8 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
@@ -31,42 +33,18 @@ public class EmployeeServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			String type = null;
 			request.setCharacterEncoding("UTF-8");
-			type = request.getParameter("type");
-			if (type == null) {
-				select(request, response);
-			} else if ("showAdd".equals(type)) {
-				showAdd(request, response);
-			} else if ("showAdd2".equals(type)) {
-				showAdd2(request, response);
-			} else if ("add".equals(type)) {
-				add(request, response);
-			} else if ("add2".equals(type)) {
-				add2(request, response);
-			} else if ("showUpdate".equals(type)) {
-				showUpdate(request, response);
-			} else if ("update".equals(type)) {
-				update(request, response);
-			} else if ("upload".equals(type)) {
-				upload(request, response);
-			} else if ("showUpdateBatch".equals(type)) {
-				showUpdateBatch(request, response);
-			} else if ("updateBatch".equals(type)) {
-				updateBatch(request, response);
-			} else if ("updateBatch2".equals(type)) {
-				updateBatch2(request, response);
-			} else if ("del".equals(type)) {
-				del(request, response);
-			} else if ("delBatch".equals(type)) {
-				delBatch(request, response);
-			}
-		} catch (UnsupportedEncodingException e) {
+			String type = request.getParameter("type");
+			Class class1 = this.getClass();
+			Method method = class1.getMethod(type, HttpServletRequest.class, HttpServletResponse.class);
+			method.invoke(this, request, response);
+		} catch (UnsupportedEncodingException | NoSuchMethodException | SecurityException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void select(HttpServletRequest request, HttpServletResponse response) {
+	public void search(HttpServletRequest request, HttpServletResponse response) {
 		List<Employee> empList = new ArrayList<>();
 		List<Department> depListAll = new ArrayList<>();
 		Employee emp = new Employee();
@@ -148,11 +126,13 @@ public class EmployeeServlet extends HttpServlet {
 			for (int i = 0; i < items.size(); i++) {
 				FileItem item = items.get(i);
 				if ("img".equals(item.getFieldName())) {
-					UUID uuid = UUID.randomUUID();
-					String end = item.getName().substring(item.getName().lastIndexOf("."));
-					img = uuid.toString() + end;
-					File savedFile = new File(path, img);
-					item.write(savedFile);
+					if(!"".equals(item.getName())) {
+						UUID uuid = UUID.randomUUID();
+						String end = item.getName().substring(item.getName().lastIndexOf("."));
+						img = uuid.toString() + end;
+						File savedFile = new File(path, img);
+						item.write(savedFile);
+					}
 				}
 			}
 			out.print(img);
@@ -167,7 +147,7 @@ public class EmployeeServlet extends HttpServlet {
 		}
 	}
 
-	public void add(HttpServletRequest request, HttpServletResponse response) {
+	public void add2(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Employee emp = new Employee();
 			boolean flag = false;
@@ -181,14 +161,14 @@ public class EmployeeServlet extends HttpServlet {
 			EmployeeDao empDao = new EmployeeDao();
 			flag = empDao.add(emp);
 			if (flag) {
-				response.sendRedirect("employee");
+				response.sendRedirect("employee?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void add2(HttpServletRequest request, HttpServletResponse response) {
+	public void add(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			FileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
@@ -212,11 +192,13 @@ public class EmployeeServlet extends HttpServlet {
 					String depStr = new String(item.getString().getBytes("ISO-8859-1"), "utf-8");
 					d_id = Integer.parseInt(depStr);
 				} else if ("img".equals(item.getFieldName())) {
-					UUID uuid = UUID.randomUUID();
-					String end = item.getName().substring(item.getName().lastIndexOf("."));
-					img = uuid.toString() + end;
-					File savedFile = new File(path, img);
-					item.write(savedFile);
+					if(!"".equals(item.getName())) {
+						UUID uuid = UUID.randomUUID();
+						String end = item.getName().substring(item.getName().lastIndexOf("."));
+						img = uuid.toString() + end;
+						File savedFile = new File(path, img);
+						item.write(savedFile);
+					}
 				}
 			}
 			Employee emp = new Employee();
@@ -231,7 +213,7 @@ public class EmployeeServlet extends HttpServlet {
 			EmployeeDao empDao = new EmployeeDao();
 			flag = empDao.add(emp);
 			if (flag) {
-				response.sendRedirect("employee");
+				response.sendRedirect("employee?type=search");
 			}
 		} catch (FileUploadException e) {
 			e.printStackTrace();
@@ -265,7 +247,6 @@ public class EmployeeServlet extends HttpServlet {
 
 	public void update(HttpServletRequest request, HttpServletResponse response) {
 		try {
-
 			boolean flag = false;
 			Employee emp = new Employee();
 			Department dep = new Department();
@@ -279,7 +260,7 @@ public class EmployeeServlet extends HttpServlet {
 			EmployeeDao empDao = new EmployeeDao();
 			flag = empDao.update(emp);
 			if (flag) {
-				response.sendRedirect("employee");
+				response.sendRedirect("employee?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -315,7 +296,7 @@ public class EmployeeServlet extends HttpServlet {
 			List<Employee> eList = (List<Employee>) jsonArray.toCollection(jsonArray, Employee.class);
 			flag = empDao.updateBatch(eList);
 			if (flag) {
-				response.sendRedirect("employee");
+				response.sendRedirect("employee?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -346,7 +327,7 @@ public class EmployeeServlet extends HttpServlet {
 			EmployeeDao empDao = new EmployeeDao();
 			flag = empDao.del(id);
 			if (flag) {
-				response.sendRedirect("employee");
+				response.sendRedirect("employee?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -360,7 +341,7 @@ public class EmployeeServlet extends HttpServlet {
 			EmployeeDao empDao = new EmployeeDao();
 			flag = empDao.delBatch(ids);
 			if (flag) {
-				response.sendRedirect("employee");
+				response.sendRedirect("employee?type=search");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

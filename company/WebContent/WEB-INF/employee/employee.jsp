@@ -195,11 +195,6 @@ select {
 					})
 				})
 				var str = JSON.stringify(array);
-				//url传输不能有大括号{} 使用str.replace()转换。
-				//str = str.replace(/{/g,"%7b");
-				//str = str.replace(/}/g,"%7d");
-				//alert(str);
-				//location.href = "employee?type=updateBatch2&emps="+ str;
 				$.ajax({
 					url:"employee",
 					type:"post",
@@ -292,7 +287,7 @@ select {
 	</div>
 	<div id="main">
 		<div id="select">
-			<form action="employee" method="post">
+			<form action="employee?type=search" method="post">
 				<div class="form-group">
 					<div>
 						<input type="text" class="col-sm-4 form-control" name="name" placeholder="请输入名称" <c:if test="${emp.name!=''}">value="${emp.name}"</c:if>>
@@ -378,14 +373,14 @@ select {
 		<div id="page">
 			<div id="pages">
 				<ul class="pagination">
-					<li id="begin"><a href="employee?ye=1&name=${emp.name}&sex=${emp.sex}&age=${emp.age!=-1?emp.age:''}&dep=${emp.dep.id}">首页</a></li>
-					<li id="pre"><a href="employee?ye=${p.ye-1}&name=${emp.name}&sex=${emp.sex}&age=${emp.age!=-1?emp.age:''}&dep=${emp.dep.id}">上一页</a></li>
+					<li id="begin"><a href="employee?type=search&ye=1&name=${emp.name}&sex=${emp.sex}&age=${emp.age!=-1?emp.age:''}&dep=${emp.dep.id}">首页</a></li>
+					<li id="pre"><a href="employee?type=search&ye=${p.ye-1}&name=${emp.name}&sex=${emp.sex}&age=${emp.age!=-1?emp.age:''}&dep=${emp.dep.id}">上一页</a></li>
 					<c:forEach begin="${p.beginYe}" end="${p.endYe}" varStatus="status">
 						<li <c:if test="${p.ye == status.index}">class="active"</c:if>><a
-							href="employee?ye=${status.index}&name=${emp.name}&sex=${emp.sex}&age=${emp.age!=-1?emp.age:''}&dep=${emp.dep.id}">${status.index}</a></li>
+							href="employee?type=search&ye=${status.index}&name=${emp.name}&sex=${emp.sex}&age=${emp.age!=-1?emp.age:''}&dep=${emp.dep.id}">${status.index}</a></li>
 					</c:forEach>
-					<li id="next"><a href="employee?ye=${p.ye+1}&name=${emp.name}&sex=${emp.sex}&age=${emp.age!=-1?emp.age:''}&dep=${emp.dep.id}">下一页</a></li>
-					<li id="end"><a href="employee?ye=${p.maxYe}&name=${emp.name}&sex=${emp.sex}&age=${emp.age!=-1?emp.age:''}&dep=${emp.dep.id}">末页</a></li>
+					<li id="next"><a href="employee?type=search&ye=${p.ye+1}&name=${emp.name}&sex=${emp.sex}&age=${emp.age!=-1?emp.age:''}&dep=${emp.dep.id}">下一页</a></li>
+					<li id="end"><a href="employee?type=search&ye=${p.maxYe}&name=${emp.name}&sex=${emp.sex}&age=${emp.age!=-1?emp.age:''}&dep=${emp.dep.id}">末页</a></li>
 				</ul>
 			</div>
 			<div id="message">

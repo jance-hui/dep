@@ -10,13 +10,9 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 	$().ready(function(){
-/* 		
-		$("tr").click(function() {
-			$(this).toggleClass("select");
-		}) */
 		
 		$("#back").click(function(){
-			location.href = "department";
+			location.href = "department?type=search";
 		})
 		
 		$("#addPro").click(function(){

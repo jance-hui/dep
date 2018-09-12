@@ -158,7 +158,7 @@ select {
 </div>
 <div id="main">
 	<div id="select">
-			<form action="project" method="post">
+			<form action="project?type=search" method="post">
 				<div class="form-group">
 					<div>
 						<input type="text" class="col-sm-4 form-control" name="name" placeholder="请输入名称" <c:if test="${pro.name!=''}">value="${pro.name}"</c:if> >
@@ -192,13 +192,13 @@ select {
 		<div id="page">
 		<div id="pages">
 			<ul class="pagination">
-				<li id="begin"><a href="project?ye=1&name=${pro.name}">首页</a></li>
-				<li id="pre"><a href="project?ye=${p.ye-1}&name=${pro.name}">上一页</a></li>
+				<li id="begin"><a href="project?type=search&ye=1&name=${pro.name}">首页</a></li>
+				<li id="pre"><a href="project?type=search&ye=${p.ye-1}&name=${pro.name}">上一页</a></li>
 			<c:forEach begin="${p.beginYe}" end="${p.endYe}" varStatus="status">
-				<li <c:if test="${p.ye == status.index}">class="active"</c:if>><a href="project?ye=${status.index}&name=${pro.name}">${status.index}</a></li>
+				<li <c:if test="${p.ye == status.index}">class="active"</c:if>><a href="project?type=search&ye=${status.index}&name=${pro.name}">${status.index}</a></li>
 			</c:forEach>
-				<li id="next"><a href="project?ye=${p.ye+1}&name=${pro.name}">下一页</a></li>
-				<li id="end"><a href="project?ye=${p.maxYe}&name=${pro.name}">末页</a></li>
+				<li id="next"><a href="project?type=search&ye=${p.ye+1}&name=${pro.name}">下一页</a></li>
+				<li id="end"><a href="project?type=search&ye=${p.maxYe}&name=${pro.name}">末页</a></li>
 			</ul>
 			</div>
 			<div id="message"><p>共${p.maxYe}页</p></div>
